@@ -7,28 +7,78 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 
-	"github.com/stangirard/yatas/plugins/commons"
+	"github.com/padok-team/yatas/plugins/commons"
 )
 
 type YatasPlugin struct {
 	logger hclog.Logger
 }
 
+type GPTPlugin struct {
+	apiKey string
+	model  string
+	prompt string
+}
+
 // Don't remove this function
 func (g *YatasPlugin) Run(c *commons.Config) []commons.Tests {
-	g.logger.Debug("message from Yatas Template Plugin")
+	g.logger.Debug("message from Yatas GPT Plugin")
 	var err error
 	if err != nil {
 		panic(err)
 	}
 	var checksAll []commons.Tests
 
-	checks, err := runPlugin(c, "template")
+	checks, err := runPlugin(g, c, "gpt")
 	if err != nil {
 		g.logger.Error("Error running plugins", "error", err)
 	}
 	checksAll = append(checksAll, checks...)
 	return checksAll
+}
+
+func UnmarshalGPT(g *YatasPlugin, c *commons.Config) (GPTPlugin, error) {
+	var gptCredentials GPTPlugin
+
+	for _, r := range c.PluginConfig {
+		gptFound := false
+		for key, value := range r {
+
+			switch key {
+			case "pluginName":
+				if value == "gpt" {
+					gptFound = true
+
+				}
+			case "config":
+
+				for _, v := range value.([]interface{}) {
+					var gptCredentials GPTPlugin
+					g.logger.Debug("🔎")
+					g.logger.Debug("%v", v)
+					for keys, values := range v.(map[string]interface{}) {
+						switch keys {
+						case "apiKey":
+							gptCredentials.apiKey = values.(string)
+						case "model":
+							gptCredentials.model = values.(string)
+						case "prompt":
+							gptCredentials.prompt = values.(string)
+						}
+					}
+
+				}
+
+			}
+		}
+		if gptFound {
+			g.logger.Debug("GPT configuration found")
+		}
+
+	}
+	g.logger.Debug("✅")
+	g.logger.Debug("%v", gptCredentials)
+	return gptCredentials, nil
 }
 
 // handshakeConfigs are used to just do a basic handshake between
@@ -68,10 +118,16 @@ func main() {
 }
 
 // Function that runs the checks or things to dot
-func runPlugin(c *commons.Config, plugin string) ([]commons.Tests, error) {
+func runPlugin(g *YatasPlugin, c *commons.Config, plugin string) ([]commons.Tests, error) {
 	var checksAll []commons.Tests
 
 	// Run the checks here
+	var gptCredentials GPTPlugin
+	gptCredentials, err := UnmarshalGPT(g, c)
+	if err != nil {
+		g.logger.Error("Error unmarshaling GPT config", "error", err)
+	}
+	generateReportChat(g, gptCredentials, c)
 
 	return checksAll, nil
 }

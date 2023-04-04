@@ -3,7 +3,7 @@
 <p align="center">
 
 # YATAS
-[![codecov](https://codecov.io/gh/StanGirard/yatas-template/branch/main/graph/badge.svg?token=OFGny8Za4x)](https://codecov.io/gh/StanGirard/YATAS) [![goreport](https://goreportcard.com/badge/github.com/stangirard/yatas-template)](https://goreportcard.com/badge/github.com/stangirard/yatas)
+[![codecov](https://codecov.io/gh/padok-team/yatas-gpt/branch/main/graph/badge.svg?token=OFGny8Za4x)](https://codecov.io/gh/padok-team/YATAS) [![goreport](https://goreportcard.com/badge/github.com/padok-team/yatas-gpt)](https://goreportcard.com/badge/github.com/padok-team/yatas)
 
 Yet Another Testing &amp; Auditing Solution 
 

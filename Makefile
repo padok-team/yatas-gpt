@@ -1,18 +1,18 @@
 default: build
 
 test:
-	go test ./...
+	go test -v ./...
 
 build:
-	go build -o bin/yatas-template
+	go build -o bin/yatas-gpt
 
 update:
 	go get -u 
 	go mod tidy
 
 install: build
-	mkdir -p ~/.yatas.d/plugins/github.com/StanGirard/yatas-template/local/
-	mv ./bin/yatas-template ~/.yatas.d/plugins/github.com/StanGirard/yatas-template/local/
+	mkdir -p ~/.yatas.d/plugins/github.com/padok-team/yatas-gpt/local/
+	mv ./bin/yatas-gpt ~/.yatas.d/plugins/github.com/padok-team/yatas-gpt/local/
 
 release: test
 	standard-version

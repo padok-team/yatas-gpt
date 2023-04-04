@@ -1,0 +1,13 @@
+
+##### AWS_BAK_002
+Steps to fix the issue:
+
+1. Create snapshots for all volumes that do not have snapshots younger than 24 hours.
+2. Check if the snapshot creation schedule is appropriate and adjust if necessary.
+3. Test and verify the fix by running the audit tool again.
+
+Impact of not fixing the issue:
+
+1. Loss of data in case of a failure or disaster.
+2. Inability to recover the data from older backups.
+3. Reduced availability and reliability of the system.

@@ -1,0 +1,47 @@
+- account: yatas
+  checks:
+    - name: EC2's snapshots are younger than a day old
+      description: Check if all snapshots are younger than 24h
+      status: FAIL
+      id: AWS_BAK_002
+      categories:
+        - Security
+        - Good Practice
+      results:
+        - message: Volume vol-087a35b38b4842120 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-087a35b38b4842120
+        - message: Volume vol-06120f5b6c4be508c has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-06120f5b6c4be508c
+        - message: Volume vol-0d0dcdbbf4dbf4800 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-0d0dcdbbf4dbf4800
+        - message: Volume vol-0083431062f21a5e7 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-0083431062f21a5e7
+        - message: Volume vol-0c3c906ee755fe4ef has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-0c3c906ee755fe4ef
+        - message: Volume vol-0f3195f2e29988b4b has snapshot younger than 24h
+          status: OK
+          resource_arn: vol-0f3195f2e29988b4b
+        - message: Volume vol-0f0823078c530147b has snapshot younger than 24h
+          status: OK
+          resource_arn: vol-0f0823078c530147b
+        - message: Volume vol-09b6e83db7d907033 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-09b6e83db7d907033
+        - message: Volume vol-0c81fdb5c5b4b9435 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-0c81fdb5c5b4b9435
+        - message: Volume vol-07db92ec424b16e01 has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-07db92ec424b16e01
+        - message: Volume vol-0b665e6fa28af780b has no snapshot younger than 24h
+          status: FAIL
+          resource_arn: vol-0b665e6fa28af780b
+      duration: 43.125µs
+      starttime: 2023-04-04T16:47:26.590232+02:00
+      endtime: 2023-04-04T16:46:32.298066+02:00
+    
