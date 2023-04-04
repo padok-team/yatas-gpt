@@ -15,9 +15,11 @@ type YatasPlugin struct {
 }
 
 type GPTPlugin struct {
-	apiKey string
-	model  string
-	prompt string
+	apiKey      string
+	model       string
+	prompt      string
+	forEachTest bool
+	onlyFailed  bool
 }
 
 // Don't remove this function
@@ -51,9 +53,8 @@ func UnmarshalGPT(g *YatasPlugin, c *commons.Config) (GPTPlugin, error) {
 
 				}
 			case "config":
-
+				g.logger.Debug("🔎Found config")
 				for _, v := range value.([]interface{}) {
-					var gptCredentials GPTPlugin
 					g.logger.Debug("🔎")
 					g.logger.Debug("%v", v)
 					for keys, values := range v.(map[string]interface{}) {
@@ -64,6 +65,10 @@ func UnmarshalGPT(g *YatasPlugin, c *commons.Config) (GPTPlugin, error) {
 							gptCredentials.model = values.(string)
 						case "prompt":
 							gptCredentials.prompt = values.(string)
+						case "forEachTest":
+							gptCredentials.forEachTest = values.(bool)
+						case "onlyFailed":
+							gptCredentials.onlyFailed = values.(bool)
 						}
 					}
 
@@ -106,7 +111,7 @@ func main() {
 	// pluginMap is the map of plugins we can dispense.
 	// Name of your plugin
 	var pluginMap = map[string]plugin.Plugin{
-		"template": &commons.YatasPlugin{Impl: yatasPlugin},
+		"gpt": &commons.YatasPlugin{Impl: yatasPlugin},
 	}
 
 	logger.Debug("message from plugin", "foo", "bar")

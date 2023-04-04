@@ -1,0 +1,66 @@
+id,category,description,status
+AWS_ACM_001,Security Good Practice,Check if certificate is valid,OK
+AWS_ACM_002,Security Good Practice,Check if certificate expires in 90 days,OK
+AWS_ACM_003,Security Good Practice,Check if certificate is in use,OK
+AWS_APG_001,Security Good Practice,Check if all cloudwatch logs are enabled for all stages,OK
+AWS_APG_002,Security Good Practice,Check if all stages are protected by ACL,OK
+AWS_APG_003,Security Good Practice,Check if all stages are enabled for tracing,FAIL
+AWS_ASG_001,Security Good Practice,Check if all autoscaling groups have a desired capacity below 80%,OK
+AWS_ASG_002,Security Good Practice,Check if all autoscaling groups have at least two availability zones,FAIL
+AWS_BAK_001,Security Good Practice,Check if all snapshots are encrypted,OK
+AWS_BAK_002,Security Good Practice,Check if all snapshots are younger than 24h,FAIL
+AWS_CFT_001,Security Good Practice,Check if all cloudfront distributions have TLS 1.2 minimum,OK
+AWS_CFT_002,Security Good Practice,Check if all cloudfront distributions are HTTPS only,OK
+AWS_CFT_003,Security Good Practice,Check if all cloudfront distributions have standard logging enabled,OK
+AWS_CFT_004,Security Good Practice,Check if all cloudfront distributions have cookies logging enabled,FAIL
+AWS_CFT_005,Security Good Practice,Check if all cloudfront distributions have an ACL used,OK
+AWS_CLD_001,Security Good Practice,Check if all cloudtrails are encrypted,FAIL
+AWS_CLD_002,Security Good Practice,check if all cloudtrails have global service events enabled,OK
+AWS_CLD_003,Security Good Practice,check if all cloudtrails are multi region,FAIL
+AWS_COG_001,Security Good Practice,Check if Cognito allows unauthenticated users,OK
+AWS_DYN_001,Security Good Practice,Check if DynamoDB encryption is enabled,FAIL
+AWS_DYN_002,Security Good Practice,Check if DynamoDB continuous backups are enabled,OK
+AWS_EC2_001,Security Good Practice,Check if all instances have a public IP,FAIL
+AWS_EC2_002,Security Good Practice,Check if all instances have monitoring enabled,FAIL
+AWS_ECR_001,Security Good Practice,Check if all ECRs have image scanning enabled,FAIL
+AWS_ECR_002,Security Good Practice,Check if all ECRs are encrypted,OK
+AWS_ECR_003,Security Good Practice,Check if all ECRs are tag immutable,FAIL
+AWS_EKS_001,Security Good Practice,Check if logging is enabled,OK
+AWS_EKS_002,Security Good Practice,Check if EKS clusters have private endpoint,OK
+AWS_ELB_001,Security Good Practice,Check if all load balancers have access logs enabled,OK
+AWS_GDT_001,Security Good Practice,Check if GuardDuty is enabled,OK
+AWS_IAM_001,Security Good Practice,Check if all users have 2FA activated,FAIL
+AWS_IAM_002,Security Good Practice,Check if all users have access key less than 90 days,FAIL
+AWS_IAM_003,Security Good Practice,Check if  users can elevate rights,OK
+AWS_IAM_004,Security Good Practice,Check if roles can elevate rights,FAIL
+AWS_IAM_005,Security Good Practice,Check if all users have not used their password for 120 days,FAIL
+AWS_LMD_001,Security Good Practice,Check if all Lambdas are private,FAIL
+AWS_LMD_002,Security Good Practice,Check if all Lambdas are in a security group,FAIL
+AWS_LMD_003,Security Good Practice,Check if all Lambdas are running smoothly,OK
+AWS_RDS_001,Security Good Practice,Check if RDS encryption is enabled,OK
+AWS_RDS_002,Security Good Practice,Check if RDS backup is enabled,OK
+AWS_RDS_003,Security Good Practice,Check if RDS minor auto upgrade is enabled,OK
+AWS_RDS_004,Security Good Practice,Check if RDS private is enabled,OK
+AWS_RDS_005,Security Good Practice,Check if RDS logging is enabled,FAIL
+AWS_RDS_006,Security Good Practice,Check if RDS delete protection is enabled,FAIL
+AWS_RDS_007,Security Good Practice,Check if Aurora RDS minor auto upgrade is enabled,FAIL
+AWS_RDS_008,Security Good Practice,Check if Aurora RDS backup is enabled,OK
+AWS_RDS_009,Security Good Practice,Check if Aurora RDS delete protection is enabled,FAIL
+AWS_RDS_010,Security Good Practice,Check if Aurora RDS encryption is enabled,OK
+AWS_RDS_011,Security Good Practice,Check if Aurora RDS logging is enabled,FAIL
+AWS_RDS_012,Security Good Practice,Check if Aurora RDS private is enabled,OK
+AWS_S3_001,Security Good Practice,Check if S3 encryption is enabled,OK
+AWS_S3_002,Security Good Practice,Check if S3 buckets are replicated to other region,OK
+AWS_S3_003,Security Good Practice,Check if S3 buckets are using object versioning,OK
+AWS_S3_004,Security Good Practice,Check if S3 buckets are using retention policy,FAIL
+AWS_S3_005,Security Good Practice,Check if S3 buckets are using Public Access Block,FAIL
+AWS_VOL_001,Security Good Practice,Check if EC2 encryption is enabled,OK
+AWS_VOL_002,Security Good Practice,Check if all volumes are of type gp3,FAIL
+AWS_VOL_003,Security Good Practice,Check if all volumes have snapshots,FAIL
+AWS_VOL_004,Security Good Practice,Check if EC2 volumes are unused,FAIL
+AWS_VPC_001,Security Good Practice,Check if VPC CIDR is /20 or bigger,OK
+AWS_VPC_002,Security Good Practice,Check if VPC has only one VPC,OK
+AWS_VPC_003,Security Good Practice,Check if VPC has only one gateway,OK
+AWS_VPC_004,Security Good Practice,Check if VPC Flow Logs are enabled,OK
+AWS_VPC_005,Security Good Practice,Check if VPC has at least 2 subnets,OK
+AWS_VPC_006,Security Good Practice,Check if Subnet are in different zone,OK

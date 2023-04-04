@@ -9,44 +9,92 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
+type summaryCheck struct {
+	Description string
+	Status      string
+	Id          string
+	Categories  []string
+}
+
+func onlyFailedTests(c *commons.Config, gptConfig GPTPlugin) []commons.Check {
+	var failedTests []commons.Check
+	for _, test := range c.Tests {
+		for _, result := range test.Checks {
+			if gptConfig.onlyFailed && result.Status == "FAIL" {
+				failedTests = append(failedTests, result)
+			} else if !gptConfig.onlyFailed {
+				failedTests = append(failedTests, result)
+			}
+		}
+	}
+	return failedTests
+}
+
+func summarizeChecks(failedTests []commons.Check) []summaryCheck {
+	var summary []summaryCheck
+	for _, test := range failedTests {
+		var summaryCheck summaryCheck
+		summaryCheck.Description = test.Description
+		summaryCheck.Status = test.Status
+		summaryCheck.Id = test.Id
+		summaryCheck.Categories = test.Categories
+		summary = append(summary, summaryCheck)
+	}
+	return summary
+}
+
+func callOpenAI(client *openai.Client, gptConfig GPTPlugin, testString string) (openai.ChatCompletionResponse, error) {
+	resp, err := client.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model: openai.GPT3Dot5Turbo,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: "Here is the result of an automated audit tool that generated the following yaml" + testString + gptConfig.prompt,
+				},
+			},
+		},
+	)
+	return resp, err
+}
+
 func generateReportChat(g *YatasPlugin, gptConfig GPTPlugin, c *commons.Config) error {
 
-	file, err := os.Create("report.html")
+	var failedTests []commons.Check
+	client := openai.NewClient(gptConfig.apiKey)
+
+	file, err := os.Create("report.txt")
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 
-	// From c.Test only get the failed tests and put them in a slice
-	var failedTests []commons.Check
-	for _, test := range c.Tests {
-		for _, result := range test.Checks {
-			if result.Status == "FAIL" {
-				failedTests = append(failedTests, result)
-			}
-		}
-	}
-	//All the failed tests are in a slice, now we need to put them in a string with key value pairs
-	var failedTestsString string
-	client := openai.NewClient(gptConfig.apiKey)
-	for _, test := range failedTests {
-		// Test.Result to string
-		results := fmt.Sprintf("%v", test.Results)
-		failedTestsString = failedTestsString + "Test Name is" + test.Name + "with error" + results + "and status" + test.Status + "and description is " + test.Description
+	failedTests = onlyFailedTests(c, gptConfig)
 
-		resp, err := client.CreateChatCompletion(
-			context.Background(),
-			openai.ChatCompletionRequest{
-				Model: openai.GPT3Dot5Turbo,
-				Messages: []openai.ChatCompletionMessage{
-					{
-						Role: openai.ChatMessageRoleUser,
-						Content: "Here is the result of an automated audit tool that generated the following yaml " + failedTestsString +
-							"Can you please give me some tips with a list of steps on how to fix it and what are the impacts of not fixing it? It should be very short and to the point with Steps to fix the issue: and  Impact of not fixing the issue:",
-					},
-				},
-			},
-		)
+	summarizedChecks := summarizeChecks(failedTests)
+
+	var testString string
+
+	if gptConfig.forEachTest {
+		for _, test := range summarizedChecks {
+			// Test.Result to string
+			testString = fmt.Sprintf("%v", test)
+			resp, err := callOpenAI(client, gptConfig, testString)
+
+			if err != nil {
+				g.logger.Debug("ChatCompletion error: %v\n", err)
+				return err
+			}
+
+			fmt.Println(resp.Choices[0].Message.Content)
+			file.WriteString("\n##### " + test.Id + "")
+			file.WriteString("\n" + resp.Choices[0].Message.Content + "\n")
+		}
+	} else {
+		// SummarizedChecks to string
+		testString = fmt.Sprintf("%v", summarizedChecks)
+		resp, err := callOpenAI(client, gptConfig, testString)
 
 		if err != nil {
 			g.logger.Debug("ChatCompletion error: %v\n", err)
@@ -54,8 +102,7 @@ func generateReportChat(g *YatasPlugin, gptConfig GPTPlugin, c *commons.Config) 
 		}
 
 		fmt.Println(resp.Choices[0].Message.Content)
-		file.WriteString("\n##### " + test.Id + "")
-		file.WriteString("\n" + resp.Choices[0].Message.Content + "")
+		file.WriteString(resp.Choices[0].Message.Content + "\n")
 	}
 
 	return nil
