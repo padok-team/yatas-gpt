@@ -3,7 +3,7 @@ module github.com/padok-team/yatas-gpt
 go 1.19
 
 require (
-	github.com/hashicorp/go-hclog v1.4.0
+	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.4.10
 	github.com/padok-team/yatas v1.3.3
 	github.com/sashabaranov/go-openai v1.6.1
